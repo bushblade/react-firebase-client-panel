@@ -14,6 +14,12 @@ const firebaseConfig = {
   storageBucket: 'reactclientpanel-fef3c.appspot.com',
   messagingSenderId: '529410638642'
 }
+// init firebase instance
+firebase.initializeApp(firebaseConfig)
+
+// init firestore
+const firestore = firebase.firestore()
+firebase.firestore().settings({ timestampsInSnapshots: true })
 
 // react-redux-firebase config
 const rrfConfig = {
@@ -21,15 +27,10 @@ const rrfConfig = {
   useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
 }
 
-// init firebase instance
-firebase.initializeApp(firebaseConfig)
-// init firestore
-// const firestore = firebase.firestore()
-
 // Add reactReduxFirebase enhancer when making store creator
 const createStoreWithFirebase = compose(
-  reactReduxFirebase(firebase, rrfConfig), // firebase instance as first argument
-  reduxFirestore(firebase) // <- needed if using firestore
+  reduxFirestore(firebase), // <- needed if using firestore
+  reactReduxFirebase(firebase, rrfConfig) // firebase instance as first argument
 )(createStore)
 
 // Add firebase to reducers
