@@ -1,7 +1,17 @@
 import React, { Component } from 'react'
-import './App.css'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+
+import './App.css'
+
 import AppNavbar from './components/layouts/AppNavbar'
+import Dashboard from './components/layouts/Dashboard'
+
+const routes = [
+  {
+    path: '/',
+    component: Dashboard
+  }
+]
 
 class App extends Component {
   render() {
@@ -9,7 +19,13 @@ class App extends Component {
       <Router>
         <div className="App">
           <AppNavbar />
-          <h1>Hello</h1>
+          <div className="container">
+            <Switch>
+              {routes.map(({ path, component }) => (
+                <Route exact path={path} component={component} key={`link-key-${path}`} />
+              ))}
+            </Switch>
+          </div>
         </div>
       </Router>
     )

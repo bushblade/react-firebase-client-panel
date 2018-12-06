@@ -12,8 +12,9 @@ class AppNavbar extends Component {
           <button
             className="navbar-toggler"
             type="button"
-            data-toggle="collapse"
-            data-target="#navbarMain">
+            onClick={() => {
+              document.getElementById('navbarMain').classList.toggle('collapse')
+            }}>
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarMain">
