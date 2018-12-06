@@ -19,7 +19,7 @@ firebase.initializeApp(firebaseConfig)
 
 // init firestore
 const firestore = firebase.firestore()
-firebase.firestore().settings({ timestampsInSnapshots: true })
+firestore.settings({ timestampsInSnapshots: true })
 
 // react-redux-firebase config
 const rrfConfig = {
@@ -46,10 +46,7 @@ const initialState = {}
 const store = createStoreWithFirebase(
   rootReducer,
   initialState,
-  compose(
-    reactReduxFirebase(firebase),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
+  compose(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
 )
 
 export default store
