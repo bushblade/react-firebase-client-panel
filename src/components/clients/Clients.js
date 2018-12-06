@@ -63,6 +63,6 @@ Clients.propTypes = {
 export default compose(
   firestoreConnect([{ collection: 'clients' }]),
   connect((state, props) => ({
-    clients: state.fireStore.ordered.clients
+    clients: state.firestore.ordered.clients
   }))
 )(Clients)
