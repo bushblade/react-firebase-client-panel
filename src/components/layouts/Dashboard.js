@@ -1,6 +1,6 @@
 import React from 'react'
 import Clients from '../clients/Clients'
-import Sidebar from '../layouts/Sidebar'
+import Sidebar from './Sidebar'
 
 const Dashboard = () => {
   return (

@@ -24,7 +24,7 @@ class Clients extends Component {
 
     if (clients) {
       return (
-        <div>
+        <>
           <div className="row">
             <div className="col-md-6">
               <h2>
@@ -58,7 +58,7 @@ class Clients extends Component {
               ))}
             </tbody>
           </table>
-        </div>
+        </>
       )
     } else {
       return <h1>Loading...</h1>
