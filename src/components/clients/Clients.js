@@ -5,13 +5,20 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
-import { firestore } from 'firebase'
+
+import Spinner from '../layouts/Spinner'
 
 class Clients extends Component {
   render() {
     const { clients } = this.props
+    // const { clients } = false
 
     if (clients) {
+      const totalBalance = clients.reduce((acc, { balance }) => {
+        acc += parseFloat(balance.toString())
+        return acc
+      }, 0)
+
       return (
         <>
           <div className="row">
@@ -20,7 +27,12 @@ class Clients extends Component {
                 <i className="fas fa-users" /> Clients
               </h2>
             </div>
-            <div className="col-md-6"> </div>
+            <div className="col-md-6">
+              <h5 className="text-right text-secondary">
+                Total Owed{' '}
+                <span className="text-primary">£{parseFloat(totalBalance).toFixed(2)}</span>
+              </h5>
+            </div>
           </div>
           <table className="table table-striped">
             <thead className="thead-inverse">
@@ -50,7 +62,7 @@ class Clients extends Component {
         </>
       )
     } else {
-      return <h1>Loading...</h1>
+      return <Spinner />
     }
   }
 }
