@@ -6,7 +6,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import posed from 'react-pose'
-import { Spring } from 'react-spring'
 
 import Spinner from '../layouts/Spinner'
 
@@ -51,12 +50,7 @@ class Clients extends Component {
             <div className="col-md-6">
               <h5 className="text-right text-secondary">
                 Total Owed{' '}
-                <Spring
-                  from={{ number: 0 }}
-                  to={{ number: parseFloat(totalBalance) }}
-                  config={{ tension: 280, friction: 60 }}>
-                  {props => <span className="text-primary">£{props.number.toFixed(2)}</span>}
-                </Spring>
+                <span className="text-primary">£{parseFloat(totalBalance).toFixed(2)}</span>
               </h5>
             </div>
           </Div>
