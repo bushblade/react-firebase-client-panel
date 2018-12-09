@@ -5,8 +5,23 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
+import posed from 'react-pose'
 
 import Spinner from '../layouts/Spinner'
+
+const Table = posed.table({
+  from: { opacity: 0 },
+  to: {
+    staggerChildren: 100,
+    opacity: 1,
+    beforeChildren: true
+  }
+})
+
+const Trow = posed.tr({
+  from: { x: -100, opacity: 0 },
+  to: { x: 0, opacity: 1 }
+})
 
 class Clients extends Component {
   render() {
@@ -34,7 +49,7 @@ class Clients extends Component {
               </h5>
             </div>
           </div>
-          <table className="table table-striped">
+          <Table className="table table-striped" initialPose={'from'} pose={'to'}>
             <thead className="thead-inverse">
               <tr>
                 <th>Name</th>
@@ -44,7 +59,7 @@ class Clients extends Component {
             </thead>
             <tbody>
               {clients.map(({ id, firstName, lastName, email, phone, balance }) => (
-                <tr key={id}>
+                <Trow key={id}>
                   <td>
                     {firstName} {lastName}
                   </td>
@@ -55,10 +70,10 @@ class Clients extends Component {
                       <i className="fas fa-arrow-circle-right" /> Details
                     </Link>
                   </td>
-                </tr>
+                </Trow>
               ))}
             </tbody>
-          </table>
+          </Table>
         </>
       )
     } else {
