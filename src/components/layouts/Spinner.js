@@ -2,23 +2,23 @@ import React, { Component } from 'react'
 import posed from 'react-pose'
 
 const transition = {
-  duration: 4000
+  duration: 500
 }
 
 const Spin = posed.div({
-  from: { rotate: ({ fromRotation }) => fromRotation, transition, scale: 1 },
+  from: { rotate: ({ fromRotation }) => fromRotation, transition, scale: 0.8 },
   to: { rotate: ({ toRotation }) => toRotation, transition, scale: 1.2 }
 })
 
 export default class Spinner extends Component {
-  state = { pose: 'to', from: 0, to: 2000 }
+  state = { pose: 'to', from: 0, to: 700 }
 
   setPose = () => {
     if (this.state.pose === 'to') {
       this.setState(({ to }) => ({
         pose: 'from',
-        from: (to += 2000),
-        to: (to += 2000)
+        from: (to += 700),
+        to: (to += 700)
       }))
     } else {
       this.setState({ pose: 'to' })
