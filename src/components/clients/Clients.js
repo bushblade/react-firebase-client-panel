@@ -54,7 +54,7 @@ class Clients extends Component {
                 <Spring
                   from={{ number: 0 }}
                   to={{ number: parseFloat(totalBalance) }}
-                  config={{ duration: 2000 }}>
+                  config={{ tension: 280, friction: 60 }}>
                   {props => <span className="text-primary">£{props.number.toFixed(2)}</span>}
                 </Spring>
               </h5>
