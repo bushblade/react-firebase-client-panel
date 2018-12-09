@@ -6,6 +6,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import posed from 'react-pose'
+import { Spring } from 'react-spring'
 
 import Spinner from '../layouts/Spinner'
 
@@ -16,6 +17,11 @@ const Table = posed.table({
     opacity: 1,
     beforeChildren: true
   }
+})
+
+const Div = posed.div({
+  from: { y: 100, opacity: 0 },
+  to: { y: 0, opacity: 1 }
 })
 
 const Trow = posed.tr({
@@ -36,7 +42,7 @@ class Clients extends Component {
 
       return (
         <>
-          <div className="row">
+          <Div className="row" initialPose={'from'} pose={'to'}>
             <div className="col-md-6">
               <h2>
                 <i className="fas fa-users" /> Clients
@@ -45,10 +51,15 @@ class Clients extends Component {
             <div className="col-md-6">
               <h5 className="text-right text-secondary">
                 Total Owed{' '}
-                <span className="text-primary">£{parseFloat(totalBalance).toFixed(2)}</span>
+                <Spring
+                  from={{ number: 0 }}
+                  to={{ number: parseFloat(totalBalance) }}
+                  config={{ duration: 2000 }}>
+                  {props => <span className="text-primary">£{props.number.toFixed(2)}</span>}
+                </Spring>
               </h5>
             </div>
-          </div>
+          </Div>
           <Table className="table table-striped" initialPose={'from'} pose={'to'}>
             <thead className="thead-inverse">
               <tr>

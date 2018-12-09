@@ -1,10 +1,21 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import posed from 'react-pose'
 
 // import { compose } from 'redux'
 // import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
+
+const Card = posed.div({
+  from: { opacity: 0 },
+  to: { opacity: 1, staggerChildren: 100, beforeChildren: true }
+})
+
+const Fgroup = posed.div({
+  from: { x: -100, opacity: 0 },
+  to: { x: 0, opacity: 1 }
+})
 
 class AddClient extends Component {
   state = {
@@ -46,7 +57,7 @@ class AddClient extends Component {
       text: 'Balance',
       required: false,
       minLength: 0,
-      type: 'text'
+      type: 'number'
     }
   }
 
@@ -86,12 +97,12 @@ class AddClient extends Component {
             </Link>
           </div>
         </div>
-        <div className="card">
+        <Card className="card" initialPose={'from'} pose={'to'}>
           <div className="card-header">Add Client</div>
           <div className="card-body">
             <form onSubmit={submit}>
               {Object.values(state).map(({ field, val, text, required, minLength, type }) => (
-                <div className="form-group" key={field}>
+                <Fgroup className="form-group" key={field}>
                   <label htmlFor={field}>{text}</label>
                   <input
                     type={type}
@@ -102,12 +113,12 @@ class AddClient extends Component {
                     onChange={onChange}
                     value={val}
                   />
-                </div>
+                </Fgroup>
               ))}
               <input type="submit" value="Submit" className="btn btn-primary btn-block" />
             </form>
           </div>
-        </div>
+        </Card>
       </div>
     )
   }

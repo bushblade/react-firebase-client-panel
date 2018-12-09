@@ -14,6 +14,11 @@ const Div = posed.div({
   to: { opacity: 1, x: 0, beforeChildren: true, staggerChildren: 100 }
 })
 
+const Row = posed.div({
+  from: { y: 100, opacity: 0 },
+  to: { y: 0, opacity: 1 }
+})
+
 const Li = posed.li({
   from: { opacity: 0, x: 100 },
   to: { opacity: 1, x: 0 }
@@ -25,20 +30,22 @@ class ClientDetails extends Component {
     if (client) {
       return (
         <>
-          <div className="row">
+          <Row className="row" initialPose={'from'} pose={'to'}>
             <div className="col-md-6">
               <Link to="/" className="btn btn-link">
                 <i className="fas fa-arrow-circle-left" />
                 Back to Dashboard
               </Link>
             </div>
-            <div className="btn-group float-right">
-              <Link to={`/client/edit/${client.id}`} className="btn btn-dark">
-                Edit
-              </Link>
-              <button className="btn btn-danger">Delete</button>
+            <div className="col-md-6">
+              <div className="btn-group float-right">
+                <Link to={`/client/edit/${client.id}`} className="btn btn-dark">
+                  Edit
+                </Link>
+                <button className="btn btn-danger">Delete</button>
+              </div>
             </div>
-          </div>
+          </Row>
           <hr />
           <Div className="card" initialPose={'from'} pose={'to'}>
             <div className="card-header">
@@ -55,7 +62,8 @@ class ClientDetails extends Component {
                 <div className="col-md-4 col sm-6">
                   <h3 className="pull-right">
                     Balance:{' '}
-                    <span className={client.balance === 0 ? 'text-success' : 'text-danger'}>
+                    <span
+                      className={parseFloat(client.balance) > 0 ? 'text-danger' : 'text-success'}>
                       {' '}
                       £{parseFloat(client.balance).toFixed(2)}
                     </span>
