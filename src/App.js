@@ -25,25 +25,21 @@ const routes = [
   }
 ]
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <Router>
-          <div className="App">
-            <AppNavbar />
-            <div className="container">
-              <Switch>
-                {routes.map(({ path, component }) => (
-                  <Route exact path={path} component={component} key={`link-key-${path}`} />
-                ))}
-              </Switch>
-            </div>
-          </div>
-        </Router>
-      </Provider>
-    )
-  }
-}
+const App = () => (
+  <Provider store={store}>
+    <Router>
+      <div className="App">
+        <AppNavbar />
+        <div className="container">
+          <Switch>
+            {routes.map(({ path, component }) => (
+              <Route exact path={path} component={component} key={`link-key-${path}`} />
+            ))}
+          </Switch>
+        </div>
+      </div>
+    </Router>
+  </Provider>
+)
 
 export default App

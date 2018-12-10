@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import posed from 'react-pose'
 
 const transition = {
-  duration: 500
+  duration: 600
 }
 
 const Spin = posed.div({

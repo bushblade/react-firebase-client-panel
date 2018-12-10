@@ -13,8 +13,8 @@ const Card = posed.div({
 })
 
 const Fgroup = posed.div({
-  from: { x: -100, opacity: 0 },
-  to: { x: 0, opacity: 1 }
+  from: { y: 100, opacity: 0 },
+  to: { y: 0, opacity: 1 }
 })
 
 class AddClient extends Component {
