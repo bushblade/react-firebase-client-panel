@@ -8,6 +8,7 @@ import { firestoreConnect } from 'react-redux-firebase'
 import posed from 'react-pose'
 
 import Spinner from '../layouts/Spinner'
+import BalanceForm from './BalanceForm'
 
 const Card = posed.div({
   from: { opacity: 0, x: -100 },
@@ -22,23 +23,6 @@ const Row = posed.div({
 const Li = posed.li({
   from: { opacity: 0, x: 100 },
   to: { opacity: 1, x: 0 }
-})
-
-const BalanceForm = posed.form({
-  closed: {
-    height: '0',
-    x: -50,
-    opacity: 0,
-    transition: { duration: 200 },
-    applyAtEnd: { visibility: 'hidden' }
-  },
-  open: {
-    height: 'auto',
-    x: 0,
-    opacity: 1,
-    transition: { duration: 200 },
-    applyAtStart: { visibility: '' }
-  }
 })
 
 class ClientDetails extends Component {
@@ -133,21 +117,10 @@ class ClientDetails extends Component {
                     </small>
                   </h3>
                   <BalanceForm
-                    onSubmit={balanceSubmit}
-                    pose={showBalanceUpdate ? 'open' : 'closed'}>
-                    <div className="input-group">
-                      <input
-                        type="number"
-                        className="form-control"
-                        name="balanceUpdateAmount"
-                        value={balanceUpdateAmount}
-                        onChange={onChange}
-                      />
-                      <div className="input-group-append">
-                        <input type="submit" value="Update" className="btn btn-outline-dark" />
-                      </div>
-                    </div>
-                  </BalanceForm>
+                    balanceSubmit={balanceSubmit}
+                    showBalanceUpdate={showBalanceUpdate}
+                    change={onChange}
+                  />
                 </div>
               </div>
               <hr />
