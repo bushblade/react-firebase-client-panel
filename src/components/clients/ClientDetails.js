@@ -25,8 +25,20 @@ const Li = posed.li({
 })
 
 const BalanceForm = posed.form({
-  closed: { height: '0', x: -50, opacity: 0, transition: { duration: 200 } },
-  open: { height: 'auto', x: 0, opacity: 1, transition: { duration: 200 } }
+  closed: {
+    height: '0',
+    x: -50,
+    opacity: 0,
+    transition: { duration: 200 },
+    applyAtEnd: { visibility: 'hidden' }
+  },
+  open: {
+    height: 'auto',
+    x: 0,
+    opacity: 1,
+    transition: { duration: 200 },
+    applyAtStart: { visibility: '' }
+  }
 })
 
 class ClientDetails extends Component {
@@ -43,7 +55,7 @@ class ClientDetails extends Component {
     const { balanceUpdateAmount } = this.state
 
     const clientUpdate = {
-      balance: parseFloat(balanceUpdateAmount)
+      balance: parseFloat(balanceUpdateAmount === '' ? '0' : balanceUpdateAmount)
     }
     firestore.update({ collection: 'clients', doc: client.id }, clientUpdate)
     this.setState({ showBalanceUpdate: false, balanceUpdateAmount: '' })
@@ -64,27 +76,6 @@ class ClientDetails extends Component {
       onChange,
       onDeleteClick
     } = this
-
-    // let balanceForm = null
-
-    // if (showBalanceUpdate) {
-    //   balanceForm = (
-    //     <BalanceForm onSubmit={balanceSubmit} pose={showBalanceUpdate ? 'to' : 'from'}>
-    //       <div className="input-group">
-    //         <input
-    //           type="number"
-    //           className="form-control"
-    //           name="balanceUpdateAmount"
-    //           value={balanceUpdateAmount}
-    //           onChange={onChange}
-    //         />
-    //         <div className="input-group-append">
-    //           <input type="submit" value="Update" className="btn btn-outline-dark" />
-    //         </div>
-    //       </div>
-    //     </BalanceForm>
-    //   )
-    // }
 
     if (client) {
       return (
