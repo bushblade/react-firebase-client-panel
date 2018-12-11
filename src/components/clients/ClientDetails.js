@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firestoreConnect, firestoreReducer } from 'react-redux-firebase'
+import { firestoreConnect } from 'react-redux-firebase'
 import posed from 'react-pose'
 
 import Spinner from '../layouts/Spinner'
@@ -22,6 +22,11 @@ const Row = posed.div({
 const Li = posed.li({
   from: { opacity: 0, x: 100 },
   to: { opacity: 1, x: 0 }
+})
+
+const BalanceForm = posed.form({
+  from: { height: '0', opacity: 0, transition: { duration: 1000 } },
+  to: { height: 'auto', opacity: 1, transition: { duration: 1000 } }
 })
 
 class ClientDetails extends Component {
@@ -46,7 +51,9 @@ class ClientDetails extends Component {
 
   onDeleteClick = () => {
     const { client, firestore, history } = this.props
-    firestore.delete({ collection: 'clients', doc: client.id }).then(() => history.push('/'))
+    if (window.confirm('Delete this client, are you sure?')) {
+      firestore.delete({ collection: 'clients', doc: client.id }).then(() => history.push('/'))
+    }
   }
 
   render() {
@@ -62,7 +69,7 @@ class ClientDetails extends Component {
 
     if (showBalanceUpdate) {
       balanceForm = (
-        <form onSubmit={balanceSubmit}>
+        <BalanceForm onSubmit={balanceSubmit} initialPose={'from'} pose={'to'}>
           <div className="input-group">
             <input
               type="number"
@@ -75,9 +82,10 @@ class ClientDetails extends Component {
               <input type="submit" value="Update" className="btn btn-outline-dark" />
             </div>
           </div>
-        </form>
+        </BalanceForm>
       )
     }
+
     if (client) {
       return (
         <>
@@ -152,7 +160,8 @@ class ClientDetails extends Component {
 }
 
 ClientDetails.propTypes = {
-  firestore: PropTypes.object.isRequired
+  firestore: PropTypes.object.isRequired,
+  client: PropTypes.object
 }
 
 export default compose(
