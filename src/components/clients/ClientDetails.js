@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firestoreConnect } from 'react-redux-firebase'
+import { firestoreConnect, firestoreReducer } from 'react-redux-firebase'
 import posed from 'react-pose'
 
 import Spinner from '../layouts/Spinner'
@@ -24,61 +24,130 @@ const Li = posed.li({
   to: { opacity: 1, x: 0 }
 })
 
-const ClientDetails = ({ client }) => {
-  if (client) {
-    return (
-      <>
-        <Row className="row" initialPose={'from'} pose={'to'}>
-          <div className="col-md-6">
-            <Link to="/" className="btn btn-link">
-              <i className="fas fa-arrow-circle-left" />
-              Back to Dashboard
-            </Link>
+class ClientDetails extends Component {
+  state = {
+    showBalanceUpdate: false,
+    balanceUpdateAmount: ''
+  }
+
+  onChange = ({ target: { name, value } }) => this.setState({ [name]: value })
+
+  balanceSubmit = e => {
+    e.preventDefault()
+    const { client, firestore } = this.props
+    const { balanceUpdateAmount } = this.state
+
+    const clientUpdate = {
+      balance: parseFloat(balanceUpdateAmount)
+    }
+    firestore.update({ collection: 'clients', doc: client.id }, clientUpdate)
+    this.setState({ showBalanceUpdate: false, balanceUpdateAmount: '' })
+  }
+
+  onDeleteClick = () => {
+    const { client, firestore, history } = this.props
+    firestore.delete({ collection: 'clients', doc: client.id }).then(() => history.push('/'))
+  }
+
+  render() {
+    const {
+      props: { client },
+      state: { showBalanceUpdate, balanceUpdateAmount },
+      balanceSubmit,
+      onChange,
+      onDeleteClick
+    } = this
+
+    let balanceForm = null
+
+    if (showBalanceUpdate) {
+      balanceForm = (
+        <form onSubmit={balanceSubmit}>
+          <div className="input-group">
+            <input
+              type="number"
+              className="form-control"
+              name="balanceUpdateAmount"
+              value={balanceUpdateAmount}
+              onChange={onChange}
+            />
+            <div className="input-group-append">
+              <input type="submit" value="Update" className="btn btn-outline-dark" />
+            </div>
           </div>
-          <div className="col-md-6">
-            <div className="btn-group float-right">
-              <Link to={`/client/edit/${client.id}`} className="btn btn-dark">
-                Edit
+        </form>
+      )
+    }
+    if (client) {
+      return (
+        <>
+          <Row className="row" initialPose={'from'} pose={'to'}>
+            <div className="col-md-6">
+              <Link to="/" className="btn btn-link">
+                <i className="fas fa-arrow-circle-left" />
+                Back to Dashboard
               </Link>
-              <button className="btn btn-danger">Delete</button>
             </div>
-          </div>
-        </Row>
-        <hr />
-        <Card className="card" initialPose={'from'} pose={'to'}>
-          <div className="card-header">
-            <h3>
-              {client.firstName} {client.lastName}
-            </h3>
-            <div className="card-body" />
-            <div className="row">
-              <div className="col-md-8 col sm-6">
-                <h4>
-                  Client ID: <span className="text-secondary">{client.id}</span>
-                </h4>
-              </div>
-              <div className="col-md-4 col sm-6">
-                <h3 className="pull-right">
-                  Balance:{' '}
-                  <span className={parseFloat(client.balance) > 0 ? 'text-danger' : 'text-success'}>
-                    {' '}
-                    £{parseFloat(client.balance).toFixed(2)}
-                  </span>
-                </h3>
-                {/* @todo - balance form */}
+            <div className="col-md-6">
+              <div className="btn-group float-right">
+                <Link to={`/client/edit/${client.id}`} className="btn btn-dark">
+                  Edit
+                </Link>
+                <button className="btn btn-danger" onClick={onDeleteClick}>
+                  Delete
+                </button>
               </div>
             </div>
-            <hr />
-            <ul className="list-group">
-              <Li className="list-group-item">Contact Email: {client.email}</Li>
-              <Li className="list-group-item">Contact Phone: {client.phone}</Li>
-            </ul>
-          </div>
-        </Card>
-      </>
-    )
-  } else {
-    return <Spinner />
+          </Row>
+          <hr />
+          <Card className="card" initialPose={'from'} pose={'to'}>
+            <div className="card-header">
+              <h3>
+                {client.firstName} {client.lastName}
+              </h3>
+              <div className="card-body" />
+              <div className="row">
+                <div className="col-md-8 col sm-6">
+                  <h4>
+                    Client ID: <span className="text-secondary">{client.id}</span>
+                  </h4>
+                </div>
+                <div className="col-md-4 col sm-6">
+                  <h3 className="pull-right">
+                    Balance:{' '}
+                    <span
+                      className={parseFloat(client.balance) > 0 ? 'text-danger' : 'text-success'}>
+                      {' '}
+                      £{parseFloat(client.balance).toFixed(2)}
+                    </span>
+                    <small>
+                      <a
+                        href="#!"
+                        onClick={() =>
+                          this.setState(({ showBalanceUpdate }) => ({
+                            showBalanceUpdate: !showBalanceUpdate
+                          }))
+                        }>
+                        {' '}
+                        <i className="fas fa-pencil-alt" />
+                      </a>
+                    </small>
+                  </h3>
+                  {balanceForm}
+                </div>
+              </div>
+              <hr />
+              <ul className="list-group">
+                <Li className="list-group-item">Contact Email: {client.email}</Li>
+                <Li className="list-group-item">Contact Phone: {client.phone}</Li>
+              </ul>
+            </div>
+          </Card>
+        </>
+      )
+    } else {
+      return <Spinner />
+    }
   }
 }
 
@@ -90,7 +159,7 @@ export default compose(
   firestoreConnect(props => [
     { collection: 'clients', storeAs: 'client', doc: props.match.params.id }
   ]),
-  connect(({ firestore: { ordered, data } }, props) => ({
-    client: data.client
+  connect(({ firestore: { ordered: { client } } }, props) => ({
+    client: client && client[0]
   }))
 )(ClientDetails)
