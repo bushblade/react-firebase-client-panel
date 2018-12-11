@@ -25,8 +25,8 @@ const Li = posed.li({
 })
 
 const BalanceForm = posed.form({
-  from: { height: '0', opacity: 0, transition: { duration: 1000 } },
-  to: { height: 'auto', opacity: 1, transition: { duration: 1000 } }
+  closed: { height: '0', x: -50, opacity: 0, transition: { duration: 200 } },
+  open: { height: 'auto', x: 0, opacity: 1, transition: { duration: 200 } }
 })
 
 class ClientDetails extends Component {
@@ -65,26 +65,26 @@ class ClientDetails extends Component {
       onDeleteClick
     } = this
 
-    let balanceForm = null
+    // let balanceForm = null
 
-    if (showBalanceUpdate) {
-      balanceForm = (
-        <BalanceForm onSubmit={balanceSubmit} initialPose={'from'} pose={'to'}>
-          <div className="input-group">
-            <input
-              type="number"
-              className="form-control"
-              name="balanceUpdateAmount"
-              value={balanceUpdateAmount}
-              onChange={onChange}
-            />
-            <div className="input-group-append">
-              <input type="submit" value="Update" className="btn btn-outline-dark" />
-            </div>
-          </div>
-        </BalanceForm>
-      )
-    }
+    // if (showBalanceUpdate) {
+    //   balanceForm = (
+    //     <BalanceForm onSubmit={balanceSubmit} pose={showBalanceUpdate ? 'to' : 'from'}>
+    //       <div className="input-group">
+    //         <input
+    //           type="number"
+    //           className="form-control"
+    //           name="balanceUpdateAmount"
+    //           value={balanceUpdateAmount}
+    //           onChange={onChange}
+    //         />
+    //         <div className="input-group-append">
+    //           <input type="submit" value="Update" className="btn btn-outline-dark" />
+    //         </div>
+    //       </div>
+    //     </BalanceForm>
+    //   )
+    // }
 
     if (client) {
       return (
@@ -141,7 +141,22 @@ class ClientDetails extends Component {
                       </a>
                     </small>
                   </h3>
-                  {balanceForm}
+                  <BalanceForm
+                    onSubmit={balanceSubmit}
+                    pose={showBalanceUpdate ? 'open' : 'closed'}>
+                    <div className="input-group">
+                      <input
+                        type="number"
+                        className="form-control"
+                        name="balanceUpdateAmount"
+                        value={balanceUpdateAmount}
+                        onChange={onChange}
+                      />
+                      <div className="input-group-append">
+                        <input type="submit" value="Update" className="btn btn-outline-dark" />
+                      </div>
+                    </div>
+                  </BalanceForm>
                 </div>
               </div>
               <hr />
