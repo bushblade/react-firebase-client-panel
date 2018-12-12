@@ -119,6 +119,7 @@ class ClientDetails extends Component {
                   <BalanceForm
                     balanceSubmit={balanceSubmit}
                     showBalanceUpdate={showBalanceUpdate}
+                    balanceUpdateAmount={balanceUpdateAmount}
                     change={onChange}
                   />
                 </div>

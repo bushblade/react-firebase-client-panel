@@ -8,6 +8,7 @@ import './App.css'
 import AppNavbar from './components/layouts/AppNavbar'
 import Dashboard from './components/layouts/Dashboard'
 import AddClient from './components/clients/AddClient'
+import EditClient from './components/clients/EditClient'
 import ClientDetails from './components/clients/ClientDetails'
 
 const routes = [
@@ -22,6 +23,10 @@ const routes = [
   {
     path: '/client/:id',
     component: ClientDetails
+  },
+  {
+    path: '/client/edit/:id',
+    component: EditClient
   }
 ]
 
