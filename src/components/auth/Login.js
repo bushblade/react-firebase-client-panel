@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-// import { compose } from 'redux'
-// import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 // import posed from 'react-pose'
+// import { notifyUser } from '../../actions/notifyActions'
+import Alert from '../layouts/Alert'
 
 class Login extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    error: false
   }
 
   onChange = ({ target: { name, value } }) => {
@@ -19,18 +22,21 @@ class Login extends Component {
   submit = e => {
     e.preventDefault()
     const {
-      props: { firebase },
+      props: { firebase, notifyUser },
       state: { email, password }
     } = this
     firebase
       .login({ email, password })
-      .then(res => console.log(res))
-      .catch(err => alert('invalid credentials'))
+      .then(res => this.setState({ error: false }))
+      .catch(err => {
+        this.setState({ error: err.message })
+        // notifyUser('invalid credentials', 'error')
+      })
   }
 
   render() {
     const {
-      state: { email, password },
+      state: { email, password, error },
       onChange,
       submit
     } = this
@@ -39,6 +45,7 @@ class Login extends Component {
         <div className="col-md-6 mx-auto">
           <div className="card">
             <div className="card-body">
+              {error ? <Alert message={error} messageType={'error'} /> : null}
               <h1 className="text-center pb-4 pt-3">
                 <span className="text-primary">
                   <i className="fas fa-lock" /> Login
@@ -81,4 +88,12 @@ Login.propTypes = {
   firebase: PropTypes.object.isRequired
 }
 
-export default firebaseConnect()(Login)
+export default compose(
+  firebaseConnect(),
+  connect(
+    (state, props) => ({
+      // notify: state.notify
+    })
+    // { notifyUser }
+  )
+)(Login)
