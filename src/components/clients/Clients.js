@@ -29,7 +29,7 @@ const Trow = posed.tr({
 })
 
 const Clients = ({ clients, loading }) => {
-  if (!loading) {
+  if (!loading && clients) {
     const totalBalance = clients.reduce((acc, { balance }) => {
       acc += parseFloat(balance.toString())
       return acc

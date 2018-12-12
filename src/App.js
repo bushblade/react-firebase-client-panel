@@ -10,6 +10,7 @@ import Dashboard from './components/layouts/Dashboard'
 import AddClient from './components/clients/AddClient'
 import EditClient from './components/clients/EditClient'
 import ClientDetails from './components/clients/ClientDetails'
+import Login from './components/auth/Login'
 
 const routes = [
   {
@@ -27,6 +28,10 @@ const routes = [
   {
     path: '/client/edit/:id',
     component: EditClient
+  },
+  {
+    path: '/login',
+    component: Login
   }
 ]
 
