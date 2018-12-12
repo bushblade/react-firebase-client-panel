@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store'
+import { UserIsAuthenticated, UserIsNotAuthenticated } from './helpers/auth'
 
 import './App.css'
 
@@ -15,23 +16,23 @@ import Login from './components/auth/Login'
 const routes = [
   {
     path: '/',
-    component: Dashboard
+    component: UserIsAuthenticated(Dashboard)
   },
   {
     path: '/client/add',
-    component: AddClient
+    component: UserIsAuthenticated(AddClient)
   },
   {
     path: '/client/:id',
-    component: ClientDetails
+    component: UserIsAuthenticated(ClientDetails)
   },
   {
     path: '/client/edit/:id',
-    component: EditClient
+    component: UserIsAuthenticated(EditClient)
   },
   {
     path: '/login',
-    component: Login
+    component: UserIsNotAuthenticated(Login)
   }
 ]
 
