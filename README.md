@@ -1,6 +1,6 @@
 ## The final project in Brad Traversy's react front to back
 
-### my brief review from the completing the course
+### my brief review from completing the course
 
 ⭐⭐⭐★★
 
