@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Redirect } from 'react-router-dom'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 // import posed from 'react-pose'
-// import { notifyUser } from '../../actions/notifyActions'
 import Alert from '../layouts/Alert'
 
 class Register extends Component {
@@ -25,27 +25,12 @@ class Register extends Component {
       props: { firebase, notifyUser },
       state: { email, password }
     } = this
-    firebase
-      .createUser({ email, password })
-      .then(res => {
-        this.setState({ error: false })
-        console.log(res)
-      })
-      .catch(err => this.setState({ error: err.message }))
-  }
-
-  componentDidMount() {
-    const {
-      props: {
-        settings: { allowRegistration },
-        history: { push }
-      }
-    } = this
-
-    if (!allowRegistration) push('/')
+    firebase.createUser({ email, password }).catch(err => this.setState({ error: err.message }))
   }
 
   render() {
+    if (!this.props.settings.allowRegistration) return <Redirect to={'/'} />
+
     const {
       state: { email, password, error },
       onChange,
@@ -101,11 +86,7 @@ Register.propTypes = {
 
 export default compose(
   firebaseConnect(),
-  connect(
-    (state, props) => ({
-      // notify: state.notify
-      settings: state.settings
-    })
-    // { notifyUser }
-  )
+  connect((state, props) => ({
+    settings: state.settings
+  }))
 )(Register)

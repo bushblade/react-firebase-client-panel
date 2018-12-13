@@ -5,7 +5,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 // import posed from 'react-pose'
-// import { notifyUser } from '../../actions/notifyActions'
 import Alert from '../layouts/Alert'
 
 class Login extends Component {
@@ -25,13 +24,9 @@ class Login extends Component {
       props: { firebase, notifyUser },
       state: { email, password }
     } = this
-    firebase
-      .login({ email, password })
-      .then(res => this.setState({ error: false }))
-      .catch(err => {
-        this.setState({ error: err.message })
-        // notifyUser('invalid credentials', 'error')
-      })
+    firebase.login({ email, password }).catch(err => {
+      this.setState({ error: err.message })
+    })
   }
 
   render() {
@@ -90,10 +85,5 @@ Login.propTypes = {
 
 export default compose(
   firebaseConnect(),
-  connect(
-    (state, props) => ({
-      // notify: state.notify
-    })
-    // { notifyUser }
-  )
+  connect((state, props) => ({}))
 )(Login)
