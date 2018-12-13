@@ -21,7 +21,7 @@ class Login extends Component {
   submit = e => {
     e.preventDefault()
     const {
-      props: { firebase, notifyUser },
+      props: { firebase },
       state: { email, password }
     } = this
     firebase.login({ email, password }).catch(err => {

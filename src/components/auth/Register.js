@@ -22,7 +22,7 @@ class Register extends Component {
   submit = e => {
     e.preventDefault()
     const {
-      props: { firebase, notifyUser },
+      props: { firebase },
       state: { email, password }
     } = this
     firebase.createUser({ email, password }).catch(err => this.setState({ error: err.message }))

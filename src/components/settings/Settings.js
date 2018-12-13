@@ -72,7 +72,6 @@ Settings.propTypes = {
 
 export default connect(
   (state, props) => ({
-    auth: state.firebase.auth,
     settings: state.settings
   }),
   { setAllowRegistration, setDisableBalanceOnAdd, setDisableBalanceOnEdit }
