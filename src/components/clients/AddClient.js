@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import posed from 'react-pose'
 
-// import { compose } from 'redux'
-// import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 
 const Card = posed.div({
@@ -87,7 +87,14 @@ class AddClient extends Component {
   }
 
   render() {
-    const { state, onChange, submit } = this
+    const {
+      state,
+      onChange,
+      submit,
+      props: {
+        settings: { disableBalanceOnAdd }
+      }
+    } = this
     return (
       <div>
         <div className="row">
@@ -112,6 +119,7 @@ class AddClient extends Component {
                     required={required}
                     onChange={onChange}
                     value={val}
+                    disabled={field === 'balance' && disableBalanceOnAdd ? true : false}
                   />
                 </Fgroup>
               ))}
@@ -125,7 +133,13 @@ class AddClient extends Component {
 }
 
 AddClient.propTypes = {
-  firestore: PropTypes.object.isRequired
+  firestore: PropTypes.object.isRequired,
+  settings: PropTypes.object.isRequired
 }
 
-export default firestoreConnect()(AddClient)
+export default compose(
+  firestoreConnect(),
+  connect((state, props) => ({
+    settings: state.settings
+  }))
+)(AddClient)

@@ -113,7 +113,11 @@ class EditClient extends Component {
 
   render() {
     const {
-      props: { client, loading },
+      props: {
+        client,
+        loading,
+        settings: { disableBalanceOnEdit }
+      },
       submit,
       state,
       onChange
@@ -143,6 +147,7 @@ class EditClient extends Component {
                       required={required}
                       onChange={onChange}
                       value={val}
+                      disabled={field === 'balance' && disableBalanceOnEdit ? true : false}
                     />
                   </Fgroup>
                 ))}
@@ -167,8 +172,9 @@ export default compose(
   firestoreConnect(props => [
     { collection: 'clients', storeAs: 'client', doc: props.match.params.id }
   ]),
-  connect(({ firestore: { ordered: { client }, status: { requesting } } }, props) => ({
+  connect(({ firestore: { ordered: { client }, status: { requesting } }, settings }, props) => ({
     client: client && client[0],
-    loading: requesting.client
+    loading: requesting.client,
+    settings
   }))
 )(EditClient)

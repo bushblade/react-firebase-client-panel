@@ -25,7 +25,10 @@ class AppNavbar extends Component {
       state: { open },
       toggleOpen,
       logout,
-      props: { auth }
+      props: {
+        auth,
+        settings: { allowRegistration }
+      }
     } = this
 
     return (
@@ -65,6 +68,20 @@ class AppNavbar extends Component {
                   </li>
                 </ul>
               </Fragment>
+            ) : null}
+            {allowRegistration && !auth.uid ? (
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link">
+                    Login
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/register" className="nav-link">
+                    Register
+                  </Link>
+                </li>
+              </ul>
             ) : null}
           </div>
         </div>
