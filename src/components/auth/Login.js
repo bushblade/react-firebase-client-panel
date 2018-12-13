@@ -4,8 +4,13 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
-// import posed from 'react-pose'
+import posed from 'react-pose'
 import Alert from '../layouts/Alert'
+
+const Card = posed.div({
+  from: { opacity: 0 },
+  to: { opacity: 1, staggerChildren: 100, beforeChildren: true }
+})
 
 class Login extends Component {
   state = {
@@ -38,7 +43,7 @@ class Login extends Component {
     return (
       <div className="row">
         <div className="col-md-6 mx-auto">
-          <div className="card">
+          <Card className="card" initialPose={'from'} pose={'to'}>
             <div className="card-body">
               {error ? <Alert message={error} messageType={'error'} /> : null}
               <h1 className="text-center pb-4 pt-3">
@@ -72,7 +77,7 @@ class Login extends Component {
                 <input type="submit" value="Login" className="btn btn-primary btn-block" />
               </form>
             </div>
-          </div>
+          </Card>
         </div>
       </div>
     )

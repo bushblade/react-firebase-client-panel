@@ -7,6 +7,12 @@ import {
   setDisableBalanceOnAdd,
   setDisableBalanceOnEdit
 } from '../../actions/settingsActions'
+import posed from 'react-pose'
+
+const Card = posed.div({
+  from: { opacity: 0 },
+  to: { opacity: 1, staggerChildren: 100, beforeChildren: true }
+})
 
 const Settings = props => {
   const {
@@ -25,7 +31,7 @@ const Settings = props => {
           </Link>
         </div>
       </div>
-      <div className="card">
+      <Card className="card" initialPose={'from'} pose={'to'}>
         <div className="card-header">Edit Settings</div>
         <div className="card-body">
           <form>
@@ -58,7 +64,7 @@ const Settings = props => {
             </div>
           </form>
         </div>
-      </div>
+      </Card>
     </Fragment>
   )
 }
