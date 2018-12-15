@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store'
 import { UserIsAuthenticated, UserIsNotAuthenticated } from './helpers/auth'
+import posed, { PoseGroup } from 'react-pose'
 
 import './App.css'
 
@@ -18,47 +19,67 @@ import Settings from './components/settings/Settings'
 const routes = [
   {
     path: '/',
-    component: UserIsAuthenticated(Dashboard)
+    component: UserIsAuthenticated(Dashboard),
+    key: 'home'
   },
   {
     path: '/client/add',
-    component: UserIsAuthenticated(AddClient)
+    component: UserIsAuthenticated(AddClient),
+    key: 'addClient'
   },
   {
     path: '/client/:id',
-    component: UserIsAuthenticated(ClientDetails)
+    component: UserIsAuthenticated(ClientDetails),
+    key: 'clientID'
   },
   {
     path: '/client/edit/:id',
-    component: UserIsAuthenticated(EditClient)
+    component: UserIsAuthenticated(EditClient),
+    key: 'clientEdit'
   },
   {
     path: '/login',
-    component: UserIsNotAuthenticated(Login)
+    component: UserIsNotAuthenticated(Login),
+    key: 'login'
   },
   {
     path: '/register',
-    component: UserIsNotAuthenticated(Register)
+    component: UserIsNotAuthenticated(Register),
+    key: 'register'
   },
   {
     path: '/settings',
-    component: UserIsAuthenticated(Settings)
+    component: UserIsAuthenticated(Settings),
+    key: 'settings'
   }
 ]
+
+const RouteContainer = posed.div({
+  enter: { opacity: 1, delay: 300, beforeChildren: true },
+  exit: { opacity: 0 }
+})
 
 const App = () => (
   <Provider store={store}>
     <Router>
-      <div className="App">
-        <AppNavbar />
-        <div className="container">
-          <Switch>
-            {routes.map(({ path, component }) => (
-              <Route exact path={path} component={component} key={`link-key-${path}`} />
-            ))}
-          </Switch>
-        </div>
-      </div>
+      <Route
+        render={({ location }) => (
+          <div className="App">
+            <AppNavbar />
+            <div className="container">
+              <PoseGroup>
+                <RouteContainer key={location.pathname}>
+                  <Switch location={location} key={`switchfor${location.key}`}>
+                    {routes.map(({ path, component, key }) => (
+                      <Route exact path={path} component={component} key={key} />
+                    ))}
+                  </Switch>
+                </RouteContainer>
+              </PoseGroup>
+            </div>
+          </div>
+        )}
+      />
     </Router>
   </Provider>
 )
