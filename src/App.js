@@ -69,7 +69,7 @@ const App = () => (
             <div className="container">
               <PoseGroup>
                 <RouteContainer key={location.pathname}>
-                  <Switch location={location} key={`switchfor${location.key}`}>
+                  <Switch location={location} key={`switchfor${location.pathname}`}>
                     {routes.map(({ path, component, key }) => (
                       <Route exact path={path} component={component} key={key} />
                     ))}
