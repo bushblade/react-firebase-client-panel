@@ -5,7 +5,6 @@ import { Redirect } from 'react-router-dom'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
-import posed from 'react-pose'
 import Alert from '../layouts/Alert'
 
 class Register extends Component {
