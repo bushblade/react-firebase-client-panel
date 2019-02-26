@@ -9,8 +9,7 @@ import { firebaseConnect } from 'react-redux-firebase'
 
 class AppNavbar extends Component {
   state = {
-    open: false,
-    isAuthenticated: false
+    open: false
   }
   toggleOpen = () => this.setState(({ open }) => ({ open: !open }))
 
