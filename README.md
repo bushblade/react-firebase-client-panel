@@ -16,4 +16,4 @@ This is not one of Brad's best courses, I would advise anyone looking for a reac
 
 I have learnt a lot from doing the course but more from having to look stuff up and find out the answers myself, which is fine but not what I expect from a paid for course. The course is not up to date, Brad does not follow react best practices in the course.
 
-I feel I have a pretty good working knowledge of react coming away from the course but more through my own learning and side projects than from the content of this course directly. I am very dissapointed with the redux portions of this course and feel I have learnt little about redux from this course.
+I feel I have a pretty good working knowledge of react coming away from the course but more through my own learning and side projects than from the content of this course directly. I am very disappointed with the redux portions of this course and feel I have learnt little about redux from this course.
