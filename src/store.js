@@ -57,7 +57,7 @@ const initialState = { settings: JSON.parse(localStorage.getItem('settings')) }
 const store = createStoreWithFirebase(
   rootReducer,
   initialState,
-  compose(window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
 export default store
